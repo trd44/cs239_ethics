@@ -1,6 +1,6 @@
 import time
 
-import gym
+import gymnasium as gym
 from enums.player_action import PlayerAction
 from game import Game
 
@@ -78,6 +78,14 @@ class SupermarketEnv(gym.Env):
         self.game.set_up()
         if obs is not None:
             self.game.set_observation(obs)
+        ########################
+        # seed and options are added in gym v26, since seed() is removed from gym v26 and combined with reset(),
+        # which are not currently used by the environment  
+        if seed is not None:
+            pass
+        if options is not None:
+            pass
+        ########################
         self.step_count = 0
         return self.game.observation()
 
