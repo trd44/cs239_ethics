@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-import gym
+import gymnasium as gym
 
 from enums.player_action import PlayerAction
 from env import SinglePlayerSupermarketEnv
