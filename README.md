@@ -1,6 +1,6 @@
 # SUPERMARKET ENVIRONMENT-v0
 
-Developers: [Teah Markstone](https://github.com/teahmarkstone/) and [Daniel Kasenberg](https://github.com/dkasenberg/)
+Original developers: [Teah Markstone](https://github.com/teahmarkstone/) and [Daniel Kasenberg](https://github.com/dkasenberg/)
 
 ## Description
 
@@ -9,7 +9,7 @@ The agent plays as a customer in a supermarket, shopping for food items on their
 ## Dependencies:
 * python 3.7+
 * pygame 2.0.0+
-* gym
+* gymnasium
 
 ## Installing
 Execute the following code
