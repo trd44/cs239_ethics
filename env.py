@@ -64,7 +64,7 @@ class SupermarketEnv(gym.Env):
             done = True
         return observation, 0., done, None
 
-    def reset(self, obs=None):
+    def reset(self,seed = None, options = None, obs=None):
         self.game = Game(self.num_players, self.player_speed,
                          keyboard_input=self.keyboard_input,
                          render_messages=self.render_messages,
