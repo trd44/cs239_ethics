@@ -15,7 +15,7 @@ The agent plays as a customer in a supermarket, shopping for food items on their
 Execute the following code
 
 ```
-git clone git@github.com:mscheutz/propershopper/.git
+git clone git@github.com:mscheutz/propershopper.git
 ```
 
 ## Running keyboard input
