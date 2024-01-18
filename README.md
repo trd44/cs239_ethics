@@ -1,4 +1,4 @@
-# SUPERMARKET ENVIRONMENT-v0
+# PROPER SHOPPER
 
 Original developers: [Teah Markstone](https://github.com/teahmarkstone/) and [Daniel Kasenberg](https://github.com/dkasenberg/)
 
