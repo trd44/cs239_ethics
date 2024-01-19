@@ -29,7 +29,7 @@ if __name__ == "__main__":
         # action = str(random.randint(0, 1))
         # action += " " + random.choice(action_commands)  # random action
 
-        action = random.choice(action_commands) + ", " + random.choice(action_commands)
+        action = "0 " + random.choice(action_commands)
 
         print("Sending action: ", action)
         sock_game.send(str.encode(action))  # send action to env
