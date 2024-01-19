@@ -29,6 +29,7 @@ if __name__ == "__main__":
         # action = str(random.randint(0, 1))
         # action += " " + random.choice(action_commands)  # random action
 
+        # assume this is the only agent in the game
         action = "0 " + random.choice(action_commands)
 
         print("Sending action: ", action)
