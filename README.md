@@ -69,13 +69,13 @@ public class Agent extends SupermarketComponentImpl {
 Assuming you put the class in the same directory as you Agent.jar, then you can compile it in that directory using:
 
 ```
-	javac -cp DIARC.jar Agent.java
+	javac -cp Agent.jar Agent.java
 ```
 
 and you can run using the following (after you first made sure that the socket is running, won’t work without it!)
 
 ```
-	java -cp .:DIARC.jar Agent <any other args>
+	java -cp .:Agent.jar Agent <any other args>
 ```
 
 (Use “;” instead of “:” for Windows!)
