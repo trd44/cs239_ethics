@@ -1,18 +1,20 @@
 # PROPER SHOPPER
 
 Original developers: [Teah Markstone](https://github.com/teahmarkstone/) and [Daniel Kasenberg](https://github.com/dkasenberg/)
+Additional developers: [Matthias Scheutz](https://github.com/mscheutz/)
 
-## Description
+## Task setting
 
-The agent plays as a customer in a supermarket, shopping for food items on their shopping list.  The simulation can be run with keyboard input, as an OpenAI gym environment, or from non-Python environments using a socket.
+An autonomous agent has to perform a shopping task in a simulated supermarket environment, gathering food items on a shopping list in a cart or basket, paying for them at the cash register and leaving the store with the purchased items.  The simulation is based on [Gymnasium].(https://gymnasium.farama.org/) and can be run manually with keyboard input, or with autonomous agents (in Python and Java) connected via a socket connection.
 
 ## Dependencies:
-* python 3.7+
-* pygame 2.0.0+
-* gymnasium
+* python 3.12+
+* pip (to install any required libraries, e.g., "pip install pygame" or "pip install gymnasium")
+* pygame 2.5.0+
+* gymnasium 0.29.1
 
 ## Installing
-Execute the following code
+Clone the repo
 
 ```
 git clone https://github.com/mscheutz/propershopper.git
@@ -21,25 +23,62 @@ git clone https://github.com/mscheutz/propershopper.git
 ## Running keyboard input
 Running the simulation with keyboard input is a good way to get a sense of the physics of the simulation and how interaction with objects works.
 
-To run keyboard input, while in the supermarket-env directory, run
+To run keyboard input, while in the "proppershopper" directory, run
 
 ```
 <python-command> socket_env.py --keyboard_input
 ```
 
-where <python-command> is the command for python3.7+. I use python3.8 for the simulation and it’s not my default python interpreter, so I have to run python3.8 main.py.
+where <python-command> is your command for running python.
 
-## Running as a gym environment
+## Running with an autonomous agent
 
-This will be modified at some point to be a gym environment with fancy registering and all that, but until then, you'll have to make do with creating a SupermarketEnv instance (found in env.py).  This can be run just like any other gym environment.
+This simulation can be run just like any other Gymnasium environment.
 
 ## Running through a socket
 
-From a terminal in the supermarket-env directory, use your python3.7+ command to run socket_env.py:
+From a terminal in the proper shopper directory, use your python command to run socket_env.py (without any arguments):
 
+```
 <python-command> socket_env.py
-  
-Instructions on how to write code to attach to the socket are TBD.
+```
+For debugging you can start "socket_env.py" with a --file <path_to_file> flag that will load in the state from the file at the specified path.  You can use your keyboard input (with "<yourpythoncommand> socket_env.py --keyboard_input") to press the 's' key while running the simulation.  If you then enter a filename in the terminal from which they're running the simulation (e.g., "myseed.txt"), then the current state of the game will be saved to "myseed.txt" and can later be reloaded using --file flag.
+
+## Running the simulation with Java agents
+Put all of your agent code into a class called Agent.java which has the following structure:
+
+```
+import com.supermarket.*;
+
+public class Agent extends SupermarketComponentImpl {
+	public Agent() {
+		super();
+		shouldRunExecutionLoop = true;
+	}
+
+	@Override
+	protected void executionLoop() {
+		// this is called every 100ms
+		// put your code in here, e.g.
+	      goSouth();
+	}
+}
+```
+
+Assuming you put the class in the same directory as you Agent.jar, then you can compile it in that directory using:
+
+```
+	javac -cp DIARC.jar Agent.java
+```
+
+and you can run using the following (after you first made sure that the socket is running, won’t work without it!)
+
+```
+	java -cp .:DIARC.jar Agent <any other args>
+```
+
+(Use “;” instead of “:” for Windows!)
+
 
 ## Command Line Options
 When running through the socket or from keyboard input, there are a number of command line arguments to specify aspects of the supermarket.
@@ -88,6 +127,7 @@ When run through keyboard input or through the socket, a norm monitor gym wrappe
 To use the norm wrapper gym environment, pass in a supermarket environment and a list of the above norms to be monitored. The violations are returned as an observation from the norm environment. In keyboard input, the norms are printed out to the terminal.
 
 ## Playing the game
+
 ### Actions and environment dynamics
 Below is a table of the gym ids of the actions available in this environment (left column), the corresponding action (middle column), and the key to press in keyboard input mode to perform the action (right column):
 
@@ -105,10 +145,10 @@ Below is a table of the gym ids of the actions available in this environment (le
 | N/A    | View inventory     | 'i'          |
 | N/A    | View shopping list | 'l'          |
 
-Actions are formatted as tuples. In the pick up action an agent can specify an index that corresponds with a food item.
+Actions are formatted as tuples. In the pick-up action an agent can specify an index that corresponds with a food item.
 
 
-Honestly, the best way to get a sense for how the game works is to try running it in keyboard input mode. Nevertheless, below is a reasonably-detailed description of the actions available and what they do in different contexts:
+While the best way to get a sense for how the game works is to try running it in keyboard input mode, here is a reasonably-detailed description of the actions available and what they do in different contexts:
 
 * North, south, east, west: move the player around on the screen.
 * No-op: does nothing. You probably won’t need to get the agent to perform this action.
@@ -175,5 +215,7 @@ The Player’s curr_cart is the index in observation.carts of the cart the playe
 * Each player keeps track of their own interaction stage with an object:
   * If a player is not currently interacting with an object (i.e., if no interaction message is on the screen), interactive_stage=-1 and total_stages=0.
   * Otherwise, a player is interacting with some object; interactive_stage is the (zero-indexed) current stage, and total_stages will be 1 or 2 depending on if the interaction in question is a zero-stage interaction.
-
-This simulation is actively under development, especially as we scale up to multi-agent interactions, add explicit monitoring of norms to the simulation. We’re trying to keep the interface as similar as possible throughout these changes, but we can’t guarantee that nothing will change.
+* The observation contains a little information about the “interactive stage” of the game, which can presumably help you remember to call interactWithObject() an appropriate number of times:
+  * If the user is not currently interacting with an object (i.e., if no interaction message is on the screen), interactive_stage=-1 and total_stages=0.
+  * Otherwise, the user is interacting with some object; interactive_stage is the (zero-indexed) current stage, and total_stages will be 1 or 2 depending on if the interaction in question is a zero-stage interaction.
+* The observation has some helper methods that may come in handy. You can rely on the individual objects’ collision() and canInteract() methods (they’re identical to those in the python simulation); be a bit more wary of the other ones. The helper methods are still very much under active development.
