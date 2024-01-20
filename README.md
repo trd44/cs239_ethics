@@ -32,11 +32,7 @@ To run keyboard input, while in the "proppershopper" directory, run
 
 where <python-command> is your command for running python.
 
-## Running with an autonomous agent
-
-This simulation can be run just like any other Gymnasium environment.
-
-## Running through a socket
+## Running with an autonomous agent through a socket
 
 From a terminal in the proper shopper directory, use your python command to run socket_env.py (without any arguments):
 
@@ -45,8 +41,23 @@ From a terminal in the proper shopper directory, use your python command to run 
 ```
 For debugging you can start "socket_env.py" with a --file <path_to_file> flag that will load in the state from the file at the specified path.  You can use your keyboard input (with "<yourpythoncommand> socket_env.py --keyboard_input") to press the 's' key while running the simulation.  If you then enter a filename in the terminal from which they're running the simulation (e.g., "myseed.txt"), then the current state of the game will be saved to "myseed.txt" and can later be reloaded using --file flag.
 
-## Running the simulation with Java agents
-Put all of your agent code into a class called Agent.java which has the following structure:
+### Running the simulation with Python agents
+Take a look at the "socket_agent.py" file which has an example of how to interact with the simulation through a socket.  The format for sending actions is "<agentnumber> <actioncommand>" (the commands are described below).
+
+```
+# build an action packet assuming this is the only agent in the game
+action = "0 " + random.choice(action_commands)
+
+# send it to the environment
+sock_game.send(str.encode(action))
+
+# get an observation back
+output = recv_socket_data(sock_game)  # get observation from env
+output = json.loads(output)
+```
+
+### Running the simulation with Java agents
+Put all of your agent code into a class called Agent.java (a template is in the repo) which has the following structure:
 
 ```
 import com.supermarket.*;
