@@ -92,8 +92,8 @@ class SupermarketEnv(gym.Env):
     def render(self, mode='human'):
         if mode.lower() == 'human' and not self.headless:
             self.game.update()
-        else:
-            print(self.game.observation(True))
+        #else:
+        #   print(self.game.observation(True))
 
 
 class SinglePlayerSupermarketEnv(gym.Wrapper):
