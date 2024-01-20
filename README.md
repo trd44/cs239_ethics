@@ -42,7 +42,7 @@ From a terminal in the proper shopper directory, use your python command to run 
 For debugging you can start "socket_env.py" with a --file <path_to_file> flag that will load in the state from the file at the specified path.  You can use your keyboard input (with "<yourpythoncommand> socket_env.py --keyboard_input") to press the 's' key while running the simulation.  If you then enter a filename in the terminal from which they're running the simulation (e.g., "myseed.txt"), then the current state of the game will be saved to "myseed.txt" and can later be reloaded using --file flag.
 
 ### Running the simulation with Python agents
-Take a look at the "socket_agent.py" file which has an example of how to interact with the simulation through a socket.  The format for sending actions is "<agentnumber> <actioncommand>" (the commands are described below).
+Take a look at the "socket_agent.py" file which has an example of how to interact with the simulation through a socket.  The format for sending actions is "<agentnumber> <actioncommand>" (the commands are described below).  Here is the snippet:
 
 ```
 # build an action packet assuming this is the only agent in the game
@@ -54,6 +54,10 @@ sock_game.send(str.encode(action))
 # get an observation back
 output = recv_socket_data(sock_game)  # get observation from env
 output = json.loads(output)
+```
+You can then run it (assuming the simulation is already running in another terminal) using
+```
+python socket_agent.py
 ```
 
 ### Running the simulation with Java agents
