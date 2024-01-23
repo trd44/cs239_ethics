@@ -15,7 +15,7 @@ class SupermarketEnv(gym.Env):
 
         super(SupermarketEnv, self).__init__()
 
-        self.step_count = 0
+        self.unwrapped.step_count = 0
         self.render_messages = render_messages
         self.keyboard_input = keyboard_input
         self.render_number = render_number
@@ -59,7 +59,7 @@ class SupermarketEnv(gym.Env):
             elif player_action == PlayerAction.PICKUP:
                 self.unwrapped.game.pickup(i, arg)
         observation = self.unwrapped.game.observation()
-        self.step_count += 1
+        self.unwrapped.step_count += 1
         if not self.unwrapped.game.running:
             done = True
         return observation, 0., done, None
@@ -86,7 +86,7 @@ class SupermarketEnv(gym.Env):
         if options is not None:
             pass
         ########################
-        self.step_count = 0
+        self.unwrapped.step_count = 0
         return self.unwrapped.game.observation()
 
     def render(self, mode='human'):
@@ -126,7 +126,7 @@ class SinglePlayerSupermarketEnv(gym.Wrapper):
         elif player_action == PlayerAction.PICKUP:
             self.unwrapped.game.pickup(i, arg)
         observation = self.unwrapped.game.observation()
-        self.step_count += 1
+        self.unwrapped.step_count += 1
         if not self.unwrapped.game.running:
             done = True
         return observation, 0., done, None

@@ -139,7 +139,7 @@ def get_action_json(action, env_, obs, reward, done, info_=None):
     action_json = {'command_result': {'command': action, 'result': result, 'message': message,
                                       'stepCost': step_cost},
                    'observation': obs,
-                   'step': env_.step_count,
+                   'step': env_.unwrapped.step_count,
                    'gameOver': done}
     # print(action_json)
     # action_json = {"hello": "world"}
