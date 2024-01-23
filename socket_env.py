@@ -19,30 +19,30 @@ class SupermarketEventHandler:
         self.env = env
         self.keyboard_input = keyboard_input
         env.reset()
-        self.curr_player = env.game.curr_player
+        self.curr_player = env.unwrapped.game.curr_player
         self.running = True
 
     def single_player_action(self, action, arg=0):
         return self.curr_player, action, arg
 
     def handle_events(self):
-        if self.env.game.players[self.curr_player].interacting:
+        if self.env.unwrapped.game.players[self.curr_player].interacting:
             self.handle_interactive_events()
         else:
             self.handle_exploratory_events()
         self.env.render(mode='violations')
 
     def handle_exploratory_events(self):
-        player = self.env.game.players[self.curr_player]
+        player = self.env.unwrapped.game.players[self.curr_player]
         for event in pygame.event.get():
             if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
-                self.env.game.running = False
+                self.env.unwrapped.game.running = False
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_s:
                 filename = input("Please enter a filename for saving the state.\n>>> ")
-                self.env.game.save_state(filename)
+                self.env.unwrapped.game.save_state(filename)
                 print("State saved to {filename}.".format(filename=filename))
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_r:
-                self.env.game.toggle_record()
+                self.env.unwrapped.game.toggle_record()
             elif self.keyboard_input:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
@@ -63,13 +63,13 @@ class SupermarketEventHandler:
 
                     # switch players (up to 9 players)
                     else:
-                        for i in range(1, len(self.env.game.players) + 1):
+                        for i in range(1, len(self.env.unwrapped.game.players) + 1):
                             if i > 9:
                                 continue
                             if event.key == pygame.key.key_code(str(i)):
                                 self.curr_player = i - 1
                                 self.env.curr_player = i - 1
-                                self.env.game.curr_player = i - 1
+                                self.env.unwrapped.game.curr_player = i - 1
 
                 # player stands still if not moving
                 elif event.type == pygame.KEYUP:
@@ -88,13 +88,13 @@ class SupermarketEventHandler:
             elif keys[pygame.K_RIGHT]:  # right
                 self.env.step(self.single_player_action(PlayerAction.EAST))
 
-        self.running = self.env.game.running
+        self.running = self.env.unwrapped.game.running
 
     def handle_interactive_events(self):
-        player = self.env.game.players[self.curr_player]
+        player = self.env.unwrapped.game.players[self.curr_player]
         for event in pygame.event.get():
             if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
-                self.env.game.running = False
+                self.env.unwrapped.game.running = False
 
             if event.type == pygame.KEYDOWN and self.keyboard_input:
                 # b key cancels interaction
@@ -116,12 +116,12 @@ class SupermarketEventHandler:
                         player.interacting = False
 
                 # use up and down arrows to navigate item select menu
-                if self.env.game.item_select:
+                if self.env.unwrapped.game.item_select:
                     if event.key == pygame.K_UP:
-                        self.env.game.select_up = True
+                        self.env.unwrapped.game.select_up = True
                     elif event.key == pygame.K_DOWN:
-                        self.env.game.select_down = True
-        self.running = self.env.game.running
+                        self.env.unwrapped.game.select_down = True
+        self.running = self.env.unwrapped.game.running
 
 
 def get_action_json(action, env_, obs, reward, done, info_=None):
@@ -319,10 +319,10 @@ if __name__ == "__main__":
     env.render()
     done = False
 
-    while env.game.running:
+    while env.unwrapped.game.running:
         events = sel.select(timeout=0)
         should_perform_action = False
-        curr_action = [(0,0)] * env.num_players
+        curr_action = [(0,0)] * env.unwrapped.num_players
         e = []
         if not args.headless:
             handler.handle_events()

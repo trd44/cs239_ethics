@@ -23,13 +23,13 @@ class SupermarketEnv(gym.Env):
 
         self.follow_player = follow_player
 
-        self.num_players = num_players
+        self.unwrapped.num_players = num_players
         self.player_speed = player_speed
-        self.game = None
+        self.unwrapped.game= None
         self.player_sprites = player_sprites
 
         self.record_path = record_path
-        self.max_num_items=max_num_items
+        self.unwrapped.max_num_items=max_num_items
 
         self.stay_alive = stay_alive
 
@@ -46,26 +46,26 @@ class SupermarketEnv(gym.Env):
         for i, player_action in enumerate(action):
             player_action, arg = player_action
             if player_action in MOVEMENT_ACTIONS:
-                self.game.player_move(i, player_action)
+                self.unwrapped.game.player_move(i, player_action)
             elif player_action == PlayerAction.NOP:
-                self.game.nop(i)
+                self.unwrapped.game.nop(i)
             elif player_action == PlayerAction.INTERACT:
-                self.game.interact(i)
+                self.unwrapped.game.interact(i)
             elif player_action == PlayerAction.TOGGLE:
-                self.game.toggle_cart(i)
-                self.game.toggle_basket(i)
+                self.unwrapped.game.toggle_cart(i)
+                self.unwrapped.game.toggle_basket(i)
             elif player_action == PlayerAction.CANCEL:
-                self.game.cancel_interaction(i)
+                self.unwrapped.game.cancel_interaction(i)
             elif player_action == PlayerAction.PICKUP:
-                self.game.pickup(i, arg)
-        observation = self.game.observation()
+                self.unwrapped.game.pickup(i, arg)
+        observation = self.unwrapped.game.observation()
         self.step_count += 1
-        if not self.game.running:
+        if not self.unwrapped.game.running:
             done = True
         return observation, 0., done, None
 
     def reset(self,seed = None, options = None, obs=None):
-        self.game = Game(self.num_players, self.player_speed,
+        self.unwrapped.game= Game(self.unwrapped.num_players, self.player_speed,
                          keyboard_input=self.keyboard_input,
                          render_messages=self.render_messages,
                          bagging=self.bagging,
@@ -75,9 +75,9 @@ class SupermarketEnv(gym.Env):
                          sprite_paths=self.player_sprites,
                          record_path=self.record_path,
                          stay_alive=self.stay_alive)
-        self.game.set_up()
+        self.unwrapped.game.set_up()
         if obs is not None:
-            self.game.set_observation(obs)
+            self.unwrapped.game.set_observation(obs)
         ########################
         # seed and options are added in gym v26, since seed() is removed from gym v26 and combined with reset(),
         # which are not currently used by the environment  
@@ -87,11 +87,11 @@ class SupermarketEnv(gym.Env):
             pass
         ########################
         self.step_count = 0
-        return self.game.observation()
+        return self.unwrapped.game.observation()
 
     def render(self, mode='human'):
         if mode.lower() == 'human' and not self.headless:
-            self.game.update()
+            self.unwrapped.game.update()
         #else:
         #   print(self.game.observation(True))
 
@@ -99,13 +99,13 @@ class SupermarketEnv(gym.Env):
 class SinglePlayerSupermarketEnv(gym.Wrapper):
     def __init__(self, env):
         super(SinglePlayerSupermarketEnv, self).__init__(env)
-        self.action_space = gym.spaces.Tuple((gym.spaces.Discrete(self.num_players),
+        self.action_space = gym.spaces.Tuple((gym.spaces.Discrete(self.unwrapped.num_players),
                                               gym.spaces.Discrete(len(PlayerAction)),
-                                              gym.spaces.Discrete(self.max_num_items)))
+                                              gym.spaces.Discrete(self.unwrapped.max_num_items)))
 
     def convert_action(self, player_action):
         i, action, arg = player_action
-        full_action = [(PlayerAction.NOP, 0)]*self.num_players
+        full_action = [(PlayerAction.NOP, 0)]*self.unwrapped.num_players
         full_action[i] = (action, arg)
         return full_action
 
@@ -113,21 +113,21 @@ class SinglePlayerSupermarketEnv(gym.Wrapper):
         done = False
         i, player_action, arg = player_action
         if player_action in MOVEMENT_ACTIONS:
-            self.game.player_move(i, player_action)
+            self.unwrapped.game.player_move(i, player_action)
         elif player_action == PlayerAction.NOP:
-            self.game.nop(i)
+            self.unwrapped.game.nop(i)
         elif player_action == PlayerAction.INTERACT:
-            self.game.interact(i)
+            self.unwrapped.game.interact(i)
         elif player_action == PlayerAction.TOGGLE:
-            self.game.toggle_cart(i)
-            self.game.toggle_basket(i)
+            self.unwrapped.game.toggle_cart(i)
+            self.unwrapped.game.toggle_basket(i)
         elif player_action == PlayerAction.CANCEL:
-            self.game.cancel_interaction(i)
+            self.unwrapped.game.cancel_interaction(i)
         elif player_action == PlayerAction.PICKUP:
-            self.game.pickup(i, arg)
-        observation = self.game.observation()
+            self.unwrapped.game.pickup(i, arg)
+        observation = self.unwrapped.game.observation()
         self.step_count += 1
-        if not self.game.running:
+        if not self.unwrapped.game.running:
             done = True
         return observation, 0., done, None
 

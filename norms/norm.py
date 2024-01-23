@@ -47,10 +47,10 @@ class NormWrapper(gym.Wrapper):
     def step(self, action):
         violations = set()
         for norm in self.norms:
-            violations.update(norm.pre_monitor(self.env.game, self.maybe_convert(action)))
+            violations.update(norm.pre_monitor(self.env.unwrapped.game, self.maybe_convert(action)))
         obs, reward, done, info = self.env.step(action)
         for norm in self.norms:
-            violations.update(norm.post_monitor(self.env.game, self.maybe_convert(action)))
+            violations.update(norm.post_monitor(self.env.unwrapped.game, self.maybe_convert(action)))
         self.violations = violations
         new_obs = obs
         # new_obs = {'violations': violations, 'obs': obs}
