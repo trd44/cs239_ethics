@@ -11,7 +11,7 @@ from norms.norms import *
 
 import pygame
 
-ACTION_COMMANDS = ['NOP', 'NORTH', 'SOUTH', 'EAST', 'WEST', 'INTERACT', 'TOGGLE_CART', 'CANCEL', 'SELECT']
+ACTION_COMMANDS = ['NOP', 'NORTH', 'SOUTH', 'EAST', 'WEST', 'INTERACT', 'TOGGLE_CART', 'CANCEL', 'SELECT','RESET']
 
 
 class SupermarketEventHandler:

@@ -15,7 +15,7 @@ if __name__ == "__main__":
     # env_id = 'Supermarket-v0'
     # env = gym.make(env_id)
 
-    action_commands = ['NOP', 'NORTH', 'SOUTH', 'EAST', 'WEST', 'TOGGLE_CART', 'INTERACT']
+    action_commands = ['NOP', 'NORTH', 'SOUTH', 'EAST', 'WEST', 'TOGGLE_CART', 'INTERACT', 'RESET']
 
     print("action_commands: ", action_commands)
 
