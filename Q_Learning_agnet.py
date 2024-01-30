@@ -27,13 +27,7 @@ class QLAgent:
             self.qtable.loc[self.trans(state)] = pd.Series(np.zeros(self.action_space), index=[i for i in range(self.action_space)])
             
     def learning(self, action, rwd, state, next_state):
-        self.check_add(state)
-        self.check_add(next_state)
-        q_sa = self.qtable.loc[self.trans(state), action]
-        max_next_q_sa = self.qtable.loc[self.trans(next_state), :].max()
-        new_q_sa = q_sa + self.alpha * (rwd + self.gamma * max_next_q_sa - q_sa)
-        self.qtable.loc[self.trans(state), action] = new_q_sa
-
+        
     def action_prob(self, state):
         self.check_add(state)
         p = np.random.uniform(0, 1)
@@ -45,12 +39,4 @@ class QLAgent:
             return prob
 
     def choose_action(self, state):
-        self.check_add(state)
-        p = np.random.uniform(0, 1)
-        if self.epsilon >= self.mini_epsilon:
-            self.epsilon *= self.decay
-        if p <= self.epsilon:
-            return np.random.choice([i for i in range(self.action_space)])
-        else:
-            prob = F.softmax(torch.tensor(self.qtable.loc[self.trans(state)].to_list()), dim=0).detach().numpy()
-            return np.random.choice(np.flatnonzero(prob == prob.max()))
+       
