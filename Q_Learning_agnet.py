@@ -5,38 +5,25 @@ import torch.nn.functional as F
 import json  # Import json for dictionary serialization
 
 class QLAgent:
-    def __init__(self, action_space, alpha=0.5, gamma=0.8, temp=1, epsilon=0.1, mini_epsilon=0.01, decay=0.999):
+    # here are some default parameters, you can use different ones
+    def __init__(self, action_space, alpha=0.5, gamma=0.8, epsilon=0.1, mini_epsilon=0.01, decay=0.999):
         self.action_space = action_space 
-        self.alpha = alpha
-        self.gamma = gamma
-        self.temp = temp
-        self.epsilon = epsilon
-        self.mini_epsilon = mini_epsilon
-        self.decay = decay
-        self.qtable = pd.DataFrame(columns=[i for i in range(self.action_space)])
+        self.alpha = alpha               # learning rate
+        self.gamma = gamma               # discount factor  
+        self.epsilon = epsilon           # exploit vs. explore probability
+        self.mini_epsilon = mini_epsilon # threshold for stopping the decay
+        self.decay = decay               # value to decay the epsilon over time
+        self.qtable = pd.DataFrame(columns=[i for i in range(self.action_space)])  # generate the initial table
     
     def trans(self, state, granularity=0.5):
         # You should design a function to transform the huge state into a learnable state for the agent
-        #It should be simple but also contains enough information for the agent to learn
+        # It should be simple but also contains enough information for the agent to learn
         
         pass
-
-    
-    def check_add(self, state):
-        if self.trans(state) not in self.qtable.index:
-            self.qtable.loc[self.trans(state)] = pd.Series(np.zeros(self.action_space), index=[i for i in range(self.action_space)])
-            
-    def learning(self, action, rwd, state, next_state):
         
-    def action_prob(self, state):
-        self.check_add(state)
-        p = np.random.uniform(0, 1)
-        self.epsilon *= 0.99
-        if p <= self.epsilon:
-            return np.array([1/self.action_space for i in range(self.action_space)])
-        else:
-            prob = F.softmax(torch.tensor(self.qtable.loc[self.trans(state)].to_list()), dim=0).detach().numpy()
-            return prob
+    def learning(self, action, rwd, state, next_state):
+        # implement the Q-learning function
 
     def choose_action(self, state):
+        # implement the action selection for the fully trained agent
        
