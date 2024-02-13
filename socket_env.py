@@ -13,6 +13,15 @@ import pygame
 
 ACTION_COMMANDS = ['NOP', 'NORTH', 'SOUTH', 'EAST', 'WEST', 'INTERACT', 'TOGGLE_CART', 'CANCEL', 'SELECT','RESET']
 
+def serialize_data(data):
+    if isinstance(data, set):
+        return list(data)
+    elif isinstance(data, dict):
+        return {k: serialize_data(v) for k, v in data.items()}
+    elif isinstance(data, list):
+        return [serialize_data(item) for item in data]
+    else:
+        return data
 
 class SupermarketEventHandler:
     def __init__(self, env, keyboard_input=False):
@@ -373,7 +382,11 @@ if __name__ == "__main__":
             obs, reward, done, info = env.step(tuple(curr_action))
             for key, mask, command in e:
                 json_to_send = get_action_json(command, env, obs, reward, done, info)
+                
+                # Serialize the data to ensure it's JSON-serializable
+                json_to_send_serialized = serialize_data(json_to_send)
+                
                 data = key.data
-                data.outb = str.encode(json.dumps(json_to_send) + "\n")
+                data.outb = str.encode(json.dumps(json_to_send_serialized) + "\n")
             env.render()
     sock_agent.close()

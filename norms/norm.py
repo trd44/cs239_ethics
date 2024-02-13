@@ -53,7 +53,7 @@ class NormWrapper(gym.Wrapper):
             violations.update(norm.post_monitor(self.env.unwrapped.game, self.maybe_convert(action)))
         self.violations = violations
         new_obs = obs
-        # new_obs = {'violations': violations, 'obs': obs}
+        new_obs = {'violations': str(violations), 'obs': obs}
         return new_obs, reward, done, info
 
     def render(self, mode='human', **kwargs):
