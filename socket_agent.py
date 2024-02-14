@@ -38,4 +38,5 @@ if __name__ == "__main__":
         output = recv_socket_data(sock_game)  # get observation from env
         output = json.loads(output)
 
-        print("JSON: ", output)
+        print("Observations: ", output["observation"])
+        print("Violations", output["violations"])
