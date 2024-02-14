@@ -62,8 +62,11 @@ class NormWrapper(gym.Wrapper):
         if not violations:
             violations = ''
         else:
+            temp = []
             # this needs to be serialized better
-            violations = str(violations)
+            for violation in violations:
+                temp.append(str(violation))
+            violations = temp
         return new_obs, reward, done, info, violations
 
     def render(self, mode='human', **kwargs):
