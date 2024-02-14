@@ -357,7 +357,7 @@ if __name__ == "__main__":
                                 print(obs_to_return)
                                 json_to_send = get_action_json("SET", env, obs_to_return, 0., False, None)
                                 data = key.data
-                                data.outb = str.encode(json.dumps(json_to_send) + "\n")
+                                data.outb = str.encode(json.dumps(json_to_send,default=lambda o: o.__dict__) + "\n")
                             if is_single_player(command):
                                 player, command, arg = get_player_and_command(command)
                                 e.append((key, mask, command))
@@ -383,10 +383,11 @@ if __name__ == "__main__":
             for key, mask, command in e:
                 json_to_send = get_action_json(command, env, obs, reward, done, info)
                 
-                # Serialize the data to ensure it's JSON-serializable
-                json_to_send_serialized = serialize_data(json_to_send)
-                
                 data = key.data
+                #data.outb = str.encode(json.dumps(json_to_send) + "\n")
+
+                # Serialize the data to ensure it's JSON-serializable
+                json_to_send_serialized = serialize_data(json_to_send)                
                 data.outb = str.encode(json.dumps(json_to_send_serialized) + "\n")
             env.render()
     sock_agent.close()
