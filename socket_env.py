@@ -133,7 +133,7 @@ class SupermarketEventHandler:
         self.running = self.env.unwrapped.game.running
 
 
-def get_action_json(action, env_, obs, reward, done, info_=None):
+def get_action_json(action, env_, obs, reward, done, info_=None, violations=''):
     # cmd, arg = get_command_argument(action)
 
     if not isinstance(info_, dict):
@@ -149,7 +149,8 @@ def get_action_json(action, env_, obs, reward, done, info_=None):
                                       'stepCost': step_cost},
                    'observation': obs,
                    'step': env_.unwrapped.step_count,
-                   'gameOver': done}
+                   'gameOver': done,
+                   'violations': violations}
     # print(action_json)
     # action_json = {"hello": "world"}
     return action_json
@@ -368,7 +369,7 @@ if __name__ == "__main__":
                                     # print(action)
                                 else:
                                     info = {'result': False, 'step_cost': 0.0, 'message': 'Invalid Command'}
-                                    json_to_send = get_action_json(command, env, None, 0., False, info)
+                                    json_to_send = get_action_json(command, env, None, 0., False, info, None)
                                     data.outb = str.encode(json.dumps(json_to_send) + "\n")
                     else:
                         print('closing connection to', data.addr)
@@ -379,9 +380,9 @@ if __name__ == "__main__":
                         sent = sock.send(data.outb)  # Should be ready to write
                         data.outb = data.outb[sent:]
         if should_perform_action:
-            obs, reward, done, info = env.step(tuple(curr_action))
+            obs, reward, done, info, violations = env.step(tuple(curr_action))
             for key, mask, command in e:
-                json_to_send = get_action_json(command, env, obs, reward, done, info)
+                json_to_send = get_action_json(command, env, obs, reward, done, info, violations)
                 
                 data = key.data
                 #data.outb = str.encode(json.dumps(json_to_send) + "\n")
