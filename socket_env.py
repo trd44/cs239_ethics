@@ -195,6 +195,13 @@ if __name__ == "__main__":
     )
 
     parser.add_argument(
+        '--mode',
+        type=int,
+        help="location of the initial state to read in",
+        default=0
+    )
+
+    parser.add_argument(
         '--port',
         type=int,
         help="Which port to bind",
@@ -276,7 +283,8 @@ if __name__ == "__main__":
                          render_number=args.render_number,
                          player_sprites=args.player_sprites,
                          record_path=args.record_path,
-                         stay_alive=args.stay_alive
+                         stay_alive=args.stay_alive,
+                         mode=args.mode
                          )
 
     norms = [CartTheftNorm(),

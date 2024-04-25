@@ -102,6 +102,10 @@ class Player:
                 self.list_quant.append(1)
         self.shopping_list = rendering_food
 
+    def pre_set_shopping_list(self, food_list, food_quantities):
+        self.shopping_list = food_list
+        self.list_quant = food_quantities
+
     def hold_food(self, string_food, food_image):
         self.holding_food = string_food
         self.holding_food_image = food_image
