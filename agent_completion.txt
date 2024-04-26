@@ -1,0 +1,2 @@
+player 0 has complete: 14.285714285714285 percent of the task
+player 1 has complete: 0.0 percent of the task

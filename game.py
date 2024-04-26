@@ -346,6 +346,8 @@ class Game:
                     print(self.preset_shopping_list[mode][i], self.preset_quantities[mode][i])
                     print("**********************setting shopping list******************************")
                     player.pre_set_shopping_list(self.preset_shopping_list[mode][i], self.preset_quantities[mode][i])
+                elif mode!=0 and self.num_players > 2:
+                    player.pre_set_shopping_list(self.preset_shopping_list[mode][2], self.preset_quantities[mode][2])
                 else:
                     player.set_shopping_list(self.food_list)
                 self.players.append(player)  # randomly generates 12 item shopping list from list of food in store

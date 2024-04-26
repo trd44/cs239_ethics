@@ -4,6 +4,7 @@ import gymnasium as gym
 from enums.player_action import PlayerAction
 from env import SinglePlayerSupermarketEnv
 
+norm_file = 'norms.txt'
 
 class NormViolation(ABC):
     def __init__(self):
