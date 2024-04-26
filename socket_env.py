@@ -381,12 +381,18 @@ if __name__ == "__main__":
                                     should_perform_action = True
                                     action_taken[player].append(action_id)
                                     with open(action_file, 'w') as f:
+                                        max_a = 0
+                                        id = -1
                                         for i in range(env.unwrapped.num_players):
                                             f.write("player " + str(i) + " has taken: " + str(len(action_taken[i])) + " actions\n")
-                                        for i in range(env.unwrapped.num_players):
-                                            f.write("actions taken by player " + str(i) + ": \n")
-                                            for action in action_taken[i]:
-                                                f.write(ACTION_COMMANDS[action] + "\n")
+                                            if len(action_taken[i]) > max_a:
+                                                max_a = len(action_taken[i])
+                                                id = i
+                                        f.write("Player " + str(id) + " has taken the least actions")
+                                        # for i in range(env.unwrapped.num_players):
+                                        #     f.write("actions taken by player " + str(i) + ": \n")
+                                        #     for action in action_taken[i]:
+                                        #         f.write(ACTION_COMMANDS[action] + "\n")
                                         f.close()
                                 else:
                                     info = {'result': False, 'step_cost': 0.0, 'message': 'Invalid Command'}
@@ -413,7 +419,15 @@ if __name__ == "__main__":
                 data.outb = str.encode(json.dumps(json_to_send_serialized) + "\n")
             env.render()
         with open(agent_completion_file, 'w') as f:
+            #indicate the winner with the maximum completion_rate
+            max_c = 0
+            id = -1
+
             for i in range(env.unwrapped.num_players):
                 completion = env.unwrapped.game.players[i].completion_rate(env.unwrapped.game.carts, env.unwrapped.game.baskets)
+                if completion > max_c:
+                    max_c = completion
+                    id = i  
                 f.write("player " + str(i) + " has complete: " + str(completion*100) + " percent of the task\n")
+            f.write("The winner is: player " + str(id) )
     sock_agent.close()
