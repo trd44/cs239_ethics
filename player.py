@@ -284,6 +284,17 @@ class Player:
             else:
                 inventory[food]["purchased"] += self.bagged_items[food]
         return inventory
+    def completion_rate(self, carts, baskets):
+        inventory = self.get_inventory(carts, baskets)
+        total = 0
+        completed = 0
+        half_completed = 0
+        for food in self.shopping_list:
+            total += self.list_quant[self.shopping_list.index(food)]
+            if food in inventory:
+                completed += inventory[food]["purchased"]
+                half_completed +=  inventory[food]["unpurchased"]
+        return (completed + half_completed*0.8) / total
 
     def render_items(self, screen, carts, baskets):
         textbox = pygame.transform.scale(pygame.image.load("text/textboxvertical.png"),
