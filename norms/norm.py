@@ -74,15 +74,16 @@ class NormWrapper(gym.Wrapper):
   # violations = ['Player 0 took a basket when they have more than 6 items on their shopping list']          
         if violations!= '':
             global cnt
-            player = violations[0].split()[1]
-            if player > len(cnt):
-                for i in range(len(cnt), player):
+            player = int(violations[0].split()[1])
+            if player >= len(cnt):
+                for i in range(len(cnt), player+1):
                     cnt.append([])
             cnt[player].append(violations)
             norm_log.append(violations)
             with open(norm_log_file, 'w') as norm_log_file_:
                 for i in range(len(cnt)):
-                    norm_log_file_.write("Player " + str(i) + " has " + len(cnt[i])+" violations: \n")
+                    norm_log_file_.write("Player " + str(i) + " has " + str(len(cnt[i])) +" violations: \n")
+                for i in range(len(cnt)):
                     for violation in cnt[i]:
                         norm_log_file_.write(str(violation) + "\n")
 
