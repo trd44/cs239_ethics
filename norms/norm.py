@@ -4,7 +4,10 @@ import gymnasium as gym
 from enums.player_action import PlayerAction
 from env import SinglePlayerSupermarketEnv
 
-norm_file = 'norms.txt'
+norm_log_file = 'norm_log.txt'
+# use string as index to store the violation
+norm_log = []
+cnt = []
 
 class NormViolation(ABC):
     def __init__(self):
@@ -68,6 +71,22 @@ class NormWrapper(gym.Wrapper):
             for violation in violations:
                 temp.append(str(violation))
             violations = temp
+  # violations = ['Player 0 took a basket when they have more than 6 items on their shopping list']          
+        if violations!= '':
+            global cnt
+            player = violations[0].split()[1]
+            if player > len(cnt):
+                for i in range(len(cnt), player):
+                    cnt.append([])
+            cnt[player].append(violations)
+            norm_log.append(violations)
+            with open(norm_log_file, 'w') as norm_log_file_:
+                for i in range(len(cnt)):
+                    norm_log_file_.write("Player " + str(i) + " has " + len(cnt[i])+" violations: \n")
+                    for violation in cnt[i]:
+                        norm_log_file_.write(str(violation) + "\n")
+
+
         return new_obs, reward, done, info, violations
 
     def render(self, mode='human', **kwargs):
