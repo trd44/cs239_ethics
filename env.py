@@ -21,6 +21,7 @@ class SupermarketEnv(gym.Env):
         self.keyboard_input = keyboard_input
         self.render_number = render_number
         self.bagging = bagging
+        self.stochastic =  stochastic
 
         self.follow_player = follow_player
 
@@ -64,7 +65,8 @@ class SupermarketEnv(gym.Env):
 
         for i, player_action in enumerate(action):
             player_action, arg = player_action
-            player_action = self.get_stochastic_action(player_action)
+            if self.stochastic == True:
+                player_action = self.get_stochastic_action(player_action)
             if player_action in MOVEMENT_ACTIONS:
                 self.unwrapped.game.player_move(i, player_action)
             elif player_action == PlayerAction.NOP:
@@ -134,7 +136,8 @@ class SinglePlayerSupermarketEnv(gym.Wrapper):
     def step(self, player_action):
         done = False
         i, player_action, arg = player_action
-        player_action = self.get_stochastic_action(player_action)
+        if self.stochastic ==  True:
+            player_action = self.get_stochastic_action(player_action)
         if player_action in MOVEMENT_ACTIONS:
             self.unwrapped.game.player_move(i, player_action)
         elif player_action == PlayerAction.NOP:

@@ -90,7 +90,7 @@ class Agent:
 
     def step(self, action):
         #print("Sending action: ", action)
-        action = "0 " + action
+        action = "2 " + action
         self.game.send(str.encode(action))  # send action to env
         output = recv_socket_data(self.game)  # get observation from env
         #print("Observations: ", output)
