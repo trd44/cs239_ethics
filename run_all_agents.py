@@ -15,7 +15,7 @@ def run_script_in_new_terminal(script_name):
 
 def main():
     # List of scripts to run
-    scripts = ['socket_env.py --keyboard --num_player=2', "astar_path_planner_0.py", "astar_path_planner_1.py"]
+    scripts = ['socket_env.py --keyboard --num_player=3 --mode=999', "astar_path_planner_0.py", "astar_path_planner_1.py", "astar_path_planner_2.py"]
 
     cnt = 0
     # Run each script in a new terminal window

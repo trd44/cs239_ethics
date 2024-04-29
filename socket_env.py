@@ -295,7 +295,8 @@ if __name__ == "__main__":
                          player_sprites=args.player_sprites,
                          record_path=args.record_path,
                          stay_alive=args.stay_alive,
-                         mode=args.mode
+                         mode=args.mode,
+                         stochastic= args.stochastic
                          )
 
     norms = [CartTheftNorm(),

@@ -1,7 +1,7 @@
 import time
 import random
 import gymnasium as gym
-from enums.player_action import PlayerAction
+from enums.player_action import PlayerAction, PlayerActionTable
 from game import Game
 
 MOVEMENT_ACTIONS = [PlayerAction.NORTH, PlayerAction.SOUTH, PlayerAction.EAST, PlayerAction.WEST]
@@ -45,15 +45,15 @@ class SupermarketEnv(gym.Env):
         self.action_probability = {}
         
         if (stochastic): # storing probability of action success rate
-            filename = input("Input stochastic probability file name: ")
+            filename = 'stochastic_probability.txt'
             with open(filename, "r") as file: 
                 content = file.read()
                 for row in content.split("\n"):
                     action_row = list(map(lambda column: column.strip(": "), row.split("\t")))
                     probability_pairs = map(lambda result: tuple(result.split(" ")), action_row[1:])
-                    self.action_probability[PlayerActionTable[action_row[0]]] = dict(map(lambda pair: (PlayerActionTable[pair[0]], int(pair[1])), probability_pairs))
-        else: 
-            self.action_probability = Action_Probabilities
+                    self.action_probability[PlayerActionTable[action_row[0]]] = dict(map(lambda pair: (PlayerActionTable[pair[0]], float(pair[1])), probability_pairs))
+        # else: 
+        #     self.action_probability = Action_Probabilities
 
     def get_stochastic_action(self, action):
         return random.choices(list(self.action_probability[action].keys()), weights=list(self.action_probability[action].values()), k=1)[0]
