@@ -201,9 +201,16 @@ if __name__ == "__main__":
     parser.add_argument(
         '--mode',
         type=int,
-        help="location of the initial state to read in",
+        help="pre-set shopping list",
         default=0
     )
+    parser.add_argument(
+        '--stochastic',
+        type=bool,
+        help="location of the initial state to read in",
+        default=False
+    )
+
 
     parser.add_argument(
         '--port',

@@ -384,7 +384,7 @@ shopping_list = game_state['observation']['players'][0]['shopping_list']
 shopping_quant = game_state['observation']['players'][0]['list_quant']
 player = Agent(socket_game=sock_game, env=game_state)
 cartReturns = [2, 18.5]
-basketReturns = [3.5, 18.5]
+basketReturns = [3, 18.5]
 registerReturns_1 = [2, 4.5]
 registerReturns_2 = [2, 9.5]
 print(shopping_list)
