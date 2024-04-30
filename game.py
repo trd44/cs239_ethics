@@ -186,7 +186,7 @@ class Game:
             ['fresh fish']],
             [
             ['apples', 'swiss cheese', 'raspberry', 'avocado'],
-            ['apple', 'milk', 'fresh fish', 'brie cheese','prepared foods']
+            ['apples', 'milk', 'fresh fish', 'brie cheese','prepared foods']
             ],
         [   ['apples', 'oranges', 'cheese wheel', 'leek', 'red bell pepper', 'avocado', 'raspberry'],
             ['apples', 'milk', 'fresh fish', 'brie cheese', 'prepared foods', 'avocado', 'raspberry']
