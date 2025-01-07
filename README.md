@@ -2,7 +2,7 @@
 
 Original developers: [Teah Markstone](https://github.com/teahmarkstone/) and [Daniel Kasenberg](https://github.com/dkasenberg/)
 
-Additional developers: [Matthias Scheutz](https://github.com/mscheutz/)
+Additional developers: [Matthias Scheutz](https://github.com/mscheutz/) and [Vasanth Sarathy](https://github.com/vasanthsarathy)
 
 ## Task setting
 
