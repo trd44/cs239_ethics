@@ -15,7 +15,8 @@ if __name__ == "__main__":
     # env_id = 'Supermarket-v0'
     # env = gym.make(env_id)
 
-    action_commands = ['NOP', 'NORTH', 'SOUTH', 'EAST', 'WEST', 'TOGGLE_CART', 'INTERACT']
+    action_commands = ['NOP', 'NORTH', 'SOUTH',
+                       'EAST', 'WEST', 'TOGGLE_CART', 'INTERACT']
 
     print("action_commands: ", action_commands)
 
@@ -27,10 +28,10 @@ if __name__ == "__main__":
 
     while True:
         # action = str(random.randint(0, 1))
-        # action += " " + random.choice(action_commands)  # random action
+        action = "0 " + random.choice(action_commands)  # random action
 
         # assume this is the only agent in the game
-        action = "0 " + "SOUTH"
+        # action = "0 " + "SOUTH"
 
         print("Sending action: ", action)
         sock_game.send(str.encode(action))  # send action to env
